@@ -1,7 +1,7 @@
 <?php
 use App\Http\Controllers\FormController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,15 +12,31 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-/**
- * Route pour afficher le formulaire
- */
+
+
+
+
+
+Route::get('/', function () {
+    return redirect('/home');
+});
+
+Route::get('/home', function () {
+    return view('home');
+});
+
 Route::get('/form', function () {
     return view('form');
 });
 
-/**
- * Route pour traiter le formulaire
- */
-Route::post('/traiter-formulaire', [FormController::class, 'traiterFormulaire'])->name('traiter-formulaire');
+Route::post('/traiter-formulaire', function (Request $request) {
+    $nom = $request->input('nom');
+    $prenom = $request->input('prenom');
+    $email = $request->input('email');
+    $telephone = $request->input('telephone');
+    $message = $request->input('message');
+
+    return view('formdata', compact('nom', 'prenom', 'email', 'telephone', 'message'));
+})->name('traiter-formulaire');
+
 
